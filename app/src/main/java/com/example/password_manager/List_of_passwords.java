@@ -27,20 +27,22 @@ public class List_of_passwords extends AppCompatActivity {
         llMain = (LinearLayout) findViewById(R.id.llMain);
         View.OnClickListener clickadd = new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) { //событие нажатия на кпопку добавить
                 LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
                         wrapContent, wrapContent);
-                Display display = getWindowManager().getDefaultDisplay();
-                Point size = new Point();
-                display.getSize(size);
-                int width = size.x;
+                Display display = getWindowManager().getDefaultDisplay(); //для получения параметров дисплея
+                Point size = new Point(); //точки края
+                display.getSize(size); //получение размера дисплея
+                int width = size.x; //ширина
                 //int height = size.y;
                 int btnGravity = Gravity.CENTER;
                 lParams.gravity = btnGravity;
                 lParams.width = width;
+
                 // создаем Button, пишем текст и добавляем в LinearLayout
                 Button btnNew = new Button(List_of_passwords.this);
-                btnNew.setText("test_button");
+                btnNew.setBackgroundColor(getResources().getColor(R.color.colorForButton)); // установили цвет кнопки
+                btnNew.setText("Test_Button");
                 llMain.addView(btnNew, lParams);
             }
         };
