@@ -33,16 +33,17 @@ public class List_of_passwords extends AppCompatActivity {
                 Display display = getWindowManager().getDefaultDisplay(); //для получения параметров дисплея
                 Point size = new Point(); //точки края
                 display.getSize(size); //получение размера дисплея
-                int width = size.x; //ширина
+                int width = size.x - 30; //ширина
                 //int height = size.y;
                 int btnGravity = Gravity.CENTER;
                 lParams.gravity = btnGravity;
                 lParams.width = width;
+                lParams.bottomMargin = 12;
 
                 // создаем Button, пишем текст и добавляем в LinearLayout
                 Button btnNew = new Button(List_of_passwords.this);
                 btnNew.setBackgroundColor(getResources().getColor(R.color.colorForButton)); // установили цвет кнопки
-                btnNew.setText("Test_ButtonTest_ButtonTest_ButtonTest_ButtonTest_ButtonTest_ButtonTest_Button");
+                btnNew.setText("Test_Button");
                 llMain.addView(btnNew, lParams);
             }
         };
