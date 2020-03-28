@@ -11,4 +11,7 @@
     <string name="login_failed">"Login failed"</string>
     <string name="add">Добавить</string>
     <string name="delete">Удалить</string>
+    <string name="canceled">Отмена</string>
+    <string name="EntryPassword">Введите пароль</string>
+    <string name="EntryLogin">Введите Логин</string>
 </resources>

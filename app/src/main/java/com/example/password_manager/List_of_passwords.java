@@ -2,6 +2,7 @@ package com.example.password_manager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
@@ -45,6 +46,9 @@ public class List_of_passwords extends AppCompatActivity {
                 btnNew.setBackgroundColor(getResources().getColor(R.color.colorForButton)); // установили цвет кнопки
                 btnNew.setText("Test_Button");
                 llMain.addView(btnNew, lParams);
+                Intent EntryIntent = new Intent(List_of_passwords.this, EntryInfo.class);
+                startActivity(EntryIntent);
+
             }
         };
         add.setOnClickListener(clickadd);
