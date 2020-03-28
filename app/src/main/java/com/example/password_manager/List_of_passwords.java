@@ -18,24 +18,33 @@ public class List_of_passwords extends AppCompatActivity {
     int wrapContent = LinearLayout.LayoutParams.WRAP_CONTENT;
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_passwords);
         //находим view элементы
         add = (Button) findViewById(R.id.add);
-        //создание обрабочтка нажатия
+        //создание обработчика нажатия
         llMain = (LinearLayout) findViewById(R.id.llMain);
         View.OnClickListener clickadd = new View.OnClickListener() {
             @Override
             public void onClick(View v) { //событие нажатия на кпопку добавить
+                //будет логика:
+                //вызов нового активити
+                //закрытие этого активити естественно
+
+
+                //открытие окошка добавления
+                Intent EntryIntent = new Intent(List_of_passwords.this, EntryInfo.class);
+                startActivity(EntryIntent);
+
+
+                //добавление кнопки на лойаут
                 LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
                         wrapContent, wrapContent);
                 Display display = getWindowManager().getDefaultDisplay(); //для получения параметров дисплея
                 Point size = new Point(); //точки края
                 display.getSize(size); //получение размера дисплея
                 int width = size.x - 30; //ширина
-                //int height = size.y;
                 int btnGravity = Gravity.CENTER;
                 lParams.gravity = btnGravity;
                 lParams.width = width;
@@ -46,8 +55,6 @@ public class List_of_passwords extends AppCompatActivity {
                 btnNew.setBackgroundColor(getResources().getColor(R.color.colorForButton)); // установили цвет кнопки
                 btnNew.setText("Test_Button");
                 llMain.addView(btnNew, lParams);
-                Intent EntryIntent = new Intent(List_of_passwords.this, EntryInfo.class);
-                startActivity(EntryIntent);
 
             }
         };
