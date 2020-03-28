@@ -42,7 +42,7 @@ public class List_of_passwords extends AppCompatActivity {
                 // создаем Button, пишем текст и добавляем в LinearLayout
                 Button btnNew = new Button(List_of_passwords.this);
                 btnNew.setBackgroundColor(getResources().getColor(R.color.colorForButton)); // установили цвет кнопки
-                btnNew.setText("Test_Button");
+                btnNew.setText("Test_ButtonTest_ButtonTest_ButtonTest_ButtonTest_ButtonTest_ButtonTest_Button");
                 llMain.addView(btnNew, lParams);
             }
         };
