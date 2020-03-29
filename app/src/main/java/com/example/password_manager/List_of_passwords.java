@@ -2,6 +2,9 @@ package com.example.password_manager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -42,58 +45,38 @@ public class List_of_passwords extends AppCompatActivity {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor c = db.query("mytable", null, null, null, null, null, null);
 
-        // ставим позицию курсора на первую строку выборки
-        // если в выборке нет строк, вернется false
-        if (c.moveToFirst()) {
+        View.OnLongClickListener longclickadd = new View.OnLongClickListener() {
 
-            // определяем номера столбцов по имени в выборке
-            int idColIndex = c.getColumnIndex("id");
-            int nameColIndex = c.getColumnIndex("url_site");
-            int emailColIndex = c.getColumnIndex("password");
+            @Override
+            public boolean onLongClick(View v) { //событие нажатия на кпопку добавить
+                //Toast.makeText(List_of_passwords.this, "test",Toast.LENGTH_LONG);
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                String k = ((Button)v).getText().toString();
+                String selection = "url_site = ?";
+                String selectionArgs[] = new String[] {k};
+                Cursor c = db.query("mytable", null, selection, selectionArgs, null, null, null);
+                if (c.moveToFirst()) {
+                    int urlIndex = c.getColumnIndex("url_site");
+                    int pasindex = c.getColumnIndex("password");
+                    do {
+                        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                        ClipData clip = ClipData.newPlainText("", c.getString(pasindex));
+                        clipboard.setPrimaryClip(clip);
+                        String text_password = String.format("Ваш логин - %s , Ваш пароль - %s",new String[]{c.getString(urlIndex),c.getString(pasindex)});
+                        Toast.makeText(List_of_passwords.this, text_password,Toast.LENGTH_LONG).show();
+                    } while (c.moveToNext());
+                }
+                c.close();
+                return true;
+            }
+        };
 
-            do {
-                // получаем значения по номерам столбцов и пишем все в лог
-                Log.d(LOG_TAG,
-                        "ID = " + c.getInt(idColIndex) +
-                                ", name = " + c.getString(nameColIndex) +
-                                ", email = " + c.getString(emailColIndex));
-                LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
-                        wrapContent, wrapContent);
 
-                Display display = getWindowManager().getDefaultDisplay(); //для получения параметров дисплея
-                Point size = new Point(); //точки края
-                display.getSize(size); //получение размера дисплея
-                int width = size.x - 30; //ширина
-                int btnGravity = Gravity.CENTER;
-                lParams.gravity = btnGravity;
-                lParams.width = width;
-                lParams.bottomMargin = 12;
 
-                // создаем Button, пишем текст и добавляем в LinearLayout
-                Button btnNew = new Button(List_of_passwords.this);
-                btnNew.setBackgroundColor(getResources().getColor(R.color.colorForButton)); // установили цвет кнопки
-                int a = (int) (Math.random() * 1000000);
-                btnNew.setText(c.getString(nameColIndex));
-                btnNew.setId(a);
-                //btnNew.setOnClickListener((View.OnClickListener) List_of_passwords.this);
-                llMain.addView(btnNew, lParams);
-            } while (c.moveToNext());
-        }
-        c.close();
-
-        //создание обработчика нажатия
         View.OnClickListener clickadd = new View.OnClickListener() {
             @Override
             public void onClick(View v) { //событие нажатия на кпопку добавить
-                //будет логика:
-                //вызов нового активити
-                //закрытие этого активити естественно
-
-
-                //открытие окошка добавления
-                //Intent EntryIntent = new Intent(List_of_passwords.this, EntryInfo.class);
-                //startActivity(EntryIntent);
-
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
                 switch(v.getId()) {
                     //добавление кнопки на лойаут
                     case R.id.add: {
@@ -104,9 +87,14 @@ public class List_of_passwords extends AppCompatActivity {
                     }
                     case R.id.delete: {
                         tmpBtn = (Button) findViewById(idactivbut);
+                        //String test = String.format("url_site = ?",((Button)tmpBtn).getText().toString());
+                        String k = ((Button)tmpBtn).getText().toString();
+                        db.delete("mytable", "url_site = ?",new String[]{k});
+                        //Toast.makeText(List_of_passwords.this, test, Toast.LENGTH_SHORT);
                         llMain.removeView(tmpBtn);
                         idactivbut = -1;
                         break;
+
                     }
                     default:
                     {
@@ -125,6 +113,40 @@ public class List_of_passwords extends AppCompatActivity {
                 }
             }
         };
+        // ставим позицию курсора на первую строку выборки
+        // если в выборке нет строк, вернется false
+        if (c.moveToFirst()) {
+
+            int nameColIndex = c.getColumnIndex("url_site");
+
+            do {
+                LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
+                        wrapContent, wrapContent);
+
+                Display display = getWindowManager().getDefaultDisplay(); //для получения параметров дисплея
+                Point size = new Point(); //точки края
+                display.getSize(size); //получение размера дисплея
+                int width = size.x - 30; //ширина
+                int btnGravity = Gravity.CENTER;
+                lParams.gravity = btnGravity;
+                lParams.width = width;
+                lParams.bottomMargin = 12;
+
+                // создаем Button, пишем текст и добавляем в LinearLayout
+                Button btnNew = new Button(List_of_passwords.this);
+                btnNew.setBackgroundColor(getResources().getColor(R.color.colorForButton)); // установили цвет кнопки
+                int a = (int) (Math.random() * 1000000);
+                btnNew.setText(c.getString(nameColIndex));
+                btnNew.setId(a);
+                btnNew.setOnClickListener(clickadd);
+                btnNew.setOnLongClickListener(longclickadd);
+                llMain.addView(btnNew, lParams);
+            } while (c.moveToNext());
+        }
+        c.close();
+
+        //создание обработчика нажатия
+
         add.setOnClickListener(clickadd);
         canc.setOnClickListener(clickadd);
     }
@@ -133,7 +155,7 @@ public class List_of_passwords extends AppCompatActivity {
     public void onBackPressed() {
         if (back_pressed + 2000 > System.currentTimeMillis()) {
 
-            Toast.makeText(getBaseContext(), "its false", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(), "By By", Toast.LENGTH_SHORT).show();
             finish();
         } else {
            // Toast.makeText(getBaseContext(), "Press once again to exit!", Toast.LENGTH_SHORT).show();

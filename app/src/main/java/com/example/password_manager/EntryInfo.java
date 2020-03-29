@@ -45,7 +45,6 @@ public class EntryInfo extends AppCompatActivity {
                         cv.put("password", password.getText().toString());
                         // вставляем запись и получаем ее ID
                         long rowId = db.insert("mytable", null, cv);
-                        Toast.makeText(EntryInfo.this,String.valueOf(rowId),Toast.LENGTH_LONG).show();
                         Intent mainintentbck = new Intent(EntryInfo.this, List_of_passwords.class);
                         finish();
                         startActivity(mainintentbck);
