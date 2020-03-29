@@ -14,7 +14,9 @@ import android.widget.Toast;
 
 public class List_of_passwords extends AppCompatActivity {
     Button add;
+    Button canc;
     LinearLayout llMain;
+    int idactivbut; // хранит значение id выбранной кнпопки
     int wrapContent = LinearLayout.LayoutParams.WRAP_CONTENT;
 
     @Override
@@ -23,6 +25,8 @@ public class List_of_passwords extends AppCompatActivity {
         setContentView(R.layout.activity_list_of_passwords);
         //находим view элементы
         add = (Button) findViewById(R.id.add);
+        canc = (Button) findViewById(R.id.delete);
+        idactivbut = -1;
         //создание обработчика нажатия
         llMain = (LinearLayout) findViewById(R.id.llMain);
         View.OnClickListener clickadd = new View.OnClickListener() {
@@ -34,31 +38,49 @@ public class List_of_passwords extends AppCompatActivity {
 
 
                 //открытие окошка добавления
-                Intent EntryIntent = new Intent(List_of_passwords.this, EntryInfo.class);
-                startActivity(EntryIntent);
+                //Intent EntryIntent = new Intent(List_of_passwords.this, EntryInfo.class);
+                //startActivity(EntryIntent);
 
+                switch(v.getId()) {
+                    //добавление кнопки на лойаут
+                    case R.id.add: {
+                        LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
+                                wrapContent, wrapContent);
 
-                //добавление кнопки на лойаут
-                LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
-                        wrapContent, wrapContent);
-                Display display = getWindowManager().getDefaultDisplay(); //для получения параметров дисплея
-                Point size = new Point(); //точки края
-                display.getSize(size); //получение размера дисплея
-                int width = size.x - 30; //ширина
-                int btnGravity = Gravity.CENTER;
-                lParams.gravity = btnGravity;
-                lParams.width = width;
-                lParams.bottomMargin = 12;
+                        Display display = getWindowManager().getDefaultDisplay(); //для получения параметров дисплея
+                        Point size = new Point(); //точки края
+                        display.getSize(size); //получение размера дисплея
+                        int width = size.x - 30; //ширина
+                        int btnGravity = Gravity.CENTER;
+                        lParams.gravity = btnGravity;
+                        lParams.width = width;
+                        lParams.bottomMargin = 12;
 
-                // создаем Button, пишем текст и добавляем в LinearLayout
-                Button btnNew = new Button(List_of_passwords.this);
-                btnNew.setBackgroundColor(getResources().getColor(R.color.colorForButton)); // установили цвет кнопки
-                btnNew.setText("Test_Button");
-                llMain.addView(btnNew, lParams);
-
+                        // создаем Button, пишем текст и добавляем в LinearLayout
+                        Button btnNew = new Button(List_of_passwords.this);
+                        btnNew.setBackgroundColor(getResources().getColor(R.color.colorForButton)); // установили цвет кнопки
+                        int a = (int) (Math.random() * 1000000);
+                        btnNew.setText(String.valueOf(a));
+                        btnNew.setId(a);
+                        btnNew.setOnClickListener(this);
+                        llMain.addView(btnNew, lParams);
+                        llMain.removeView(add);
+                        break;
+                    }
+                    case R.id.delete: {
+                        break;
+                    }
+                    default:
+                    {
+                        idactivbut = (v.getId());
+                        canc.setBackgroundColor(getResources().getColor(R.color.deletebutactive));
+                        break;
+                    }
+                }
             }
         };
         add.setOnClickListener(clickadd);
+        canc.setOnClickListener(clickadd);
     }
     private static long back_pressed;
     @Override
