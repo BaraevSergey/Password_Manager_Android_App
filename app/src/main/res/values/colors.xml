@@ -4,5 +4,6 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="colorForButton">#0CB1F7</color>
+    <color name="colorForButtonact">#1133BA</color>
     <color name="deletebutactive">#ED2A2A</color>
 </resources>

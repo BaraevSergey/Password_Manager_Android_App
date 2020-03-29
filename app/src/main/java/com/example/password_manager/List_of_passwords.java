@@ -18,7 +18,7 @@ public class List_of_passwords extends AppCompatActivity {
     LinearLayout llMain;
     int idactivbut; // хранит значение id выбранной кнпопки
     int wrapContent = LinearLayout.LayoutParams.WRAP_CONTENT;
-
+    Button tmpBtn; //прошлая нажатая кнопка
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,12 +68,23 @@ public class List_of_passwords extends AppCompatActivity {
                         break;
                     }
                     case R.id.delete: {
+                        tmpBtn = (Button) findViewById(idactivbut);
+                        llMain.removeView(tmpBtn);
+                        idactivbut = -1;
                         break;
                     }
                     default:
                     {
-                        idactivbut = (v.getId());
-                        canc.setBackgroundColor(getResources().getColor(R.color.deletebutactive));
+                        if (idactivbut!=-1) {
+                            tmpBtn = (Button) findViewById(idactivbut);
+                            tmpBtn.setBackgroundColor(getResources().getColor(R.color.colorForButton));
+                        }
+                        idactivbut = v.getId();
+                        v.setBackgroundColor(getResources().getColor(R.color.colorForButtonact));
+                        if (idactivbut!=-1)
+                        {
+                            canc.setBackgroundColor(getResources().getColor(R.color.deletebutactive));
+                        }
                         break;
                     }
                 }
