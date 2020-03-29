@@ -3,8 +3,11 @@ package com.example.password_manager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
@@ -13,12 +16,18 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class List_of_passwords extends AppCompatActivity {
+    final String LOG_TAG = "myLogs";
     Button add;
     Button canc;
     LinearLayout llMain;
+    DBHelper dbHelper;
     int idactivbut; // хранит значение id выбранной кнпопки
     int wrapContent = LinearLayout.LayoutParams.WRAP_CONTENT;
     Button tmpBtn; //прошлая нажатая кнопка
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,8 +36,52 @@ public class List_of_passwords extends AppCompatActivity {
         add = (Button) findViewById(R.id.add);
         canc = (Button) findViewById(R.id.delete);
         idactivbut = -1;
-        //создание обработчика нажатия
         llMain = (LinearLayout) findViewById(R.id.llMain);
+
+        dbHelper = new DBHelper(this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor c = db.query("mytable", null, null, null, null, null, null);
+
+        // ставим позицию курсора на первую строку выборки
+        // если в выборке нет строк, вернется false
+        if (c.moveToFirst()) {
+
+            // определяем номера столбцов по имени в выборке
+            int idColIndex = c.getColumnIndex("id");
+            int nameColIndex = c.getColumnIndex("url_site");
+            int emailColIndex = c.getColumnIndex("password");
+
+            do {
+                // получаем значения по номерам столбцов и пишем все в лог
+                Log.d(LOG_TAG,
+                        "ID = " + c.getInt(idColIndex) +
+                                ", name = " + c.getString(nameColIndex) +
+                                ", email = " + c.getString(emailColIndex));
+                LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
+                        wrapContent, wrapContent);
+
+                Display display = getWindowManager().getDefaultDisplay(); //для получения параметров дисплея
+                Point size = new Point(); //точки края
+                display.getSize(size); //получение размера дисплея
+                int width = size.x - 30; //ширина
+                int btnGravity = Gravity.CENTER;
+                lParams.gravity = btnGravity;
+                lParams.width = width;
+                lParams.bottomMargin = 12;
+
+                // создаем Button, пишем текст и добавляем в LinearLayout
+                Button btnNew = new Button(List_of_passwords.this);
+                btnNew.setBackgroundColor(getResources().getColor(R.color.colorForButton)); // установили цвет кнопки
+                int a = (int) (Math.random() * 1000000);
+                btnNew.setText(String.valueOf(a));
+                btnNew.setId(a);
+                btnNew.setOnClickListener((View.OnClickListener) List_of_passwords.this);
+                llMain.addView(btnNew, lParams);
+            } while (c.moveToNext());
+        }
+        c.close();
+
+        //создание обработчика нажатия
         View.OnClickListener clickadd = new View.OnClickListener() {
             @Override
             public void onClick(View v) { //событие нажатия на кпопку добавить
@@ -44,27 +97,6 @@ public class List_of_passwords extends AppCompatActivity {
                 switch(v.getId()) {
                     //добавление кнопки на лойаут
                     case R.id.add: {
-                        LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
-                                wrapContent, wrapContent);
-
-                        Display display = getWindowManager().getDefaultDisplay(); //для получения параметров дисплея
-                        Point size = new Point(); //точки края
-                        display.getSize(size); //получение размера дисплея
-                        int width = size.x - 30; //ширина
-                        int btnGravity = Gravity.CENTER;
-                        lParams.gravity = btnGravity;
-                        lParams.width = width;
-                        lParams.bottomMargin = 12;
-
-                        // создаем Button, пишем текст и добавляем в LinearLayout
-                        Button btnNew = new Button(List_of_passwords.this);
-                        btnNew.setBackgroundColor(getResources().getColor(R.color.colorForButton)); // установили цвет кнопки
-                        int a = (int) (Math.random() * 1000000);
-                        btnNew.setText(String.valueOf(a));
-                        btnNew.setId(a);
-                        btnNew.setOnClickListener(this);
-                        llMain.addView(btnNew, lParams);
-                        llMain.removeView(add);
                         break;
                     }
                     case R.id.delete: {
@@ -105,5 +137,4 @@ public class List_of_passwords extends AppCompatActivity {
         }
         back_pressed = System.currentTimeMillis();
     }
-
 }
