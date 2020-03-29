@@ -73,9 +73,9 @@ public class List_of_passwords extends AppCompatActivity {
                 Button btnNew = new Button(List_of_passwords.this);
                 btnNew.setBackgroundColor(getResources().getColor(R.color.colorForButton)); // установили цвет кнопки
                 int a = (int) (Math.random() * 1000000);
-                btnNew.setText(String.valueOf(a));
+                btnNew.setText(c.getString(nameColIndex));
                 btnNew.setId(a);
-                btnNew.setOnClickListener((View.OnClickListener) List_of_passwords.this);
+                //btnNew.setOnClickListener((View.OnClickListener) List_of_passwords.this);
                 llMain.addView(btnNew, lParams);
             } while (c.moveToNext());
         }
@@ -97,6 +97,9 @@ public class List_of_passwords extends AppCompatActivity {
                 switch(v.getId()) {
                     //добавление кнопки на лойаут
                     case R.id.add: {
+                        Intent mainintentbck = new Intent(List_of_passwords.this, EntryInfo.class);
+                        finish();
+                        startActivity(mainintentbck);
                         break;
                     }
                     case R.id.delete: {
