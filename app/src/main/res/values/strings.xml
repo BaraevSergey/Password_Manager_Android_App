@@ -14,4 +14,8 @@
     <string name="canceled">Отмена</string>
     <string name="EntryPassword">Введите пароль</string>
     <string name="EntryLogin">Введите Логин</string>
+    <string name="EntryLoginRegister">Введите ваш логин</string>
+    <string name="EntryPasswordRegister">Введите ваш пароль</string>
+    <string name="EntryPasswordAgain">Подтвердите ваш пароль</string>
+    <string name="Registration">Зарегистрироваться</string>
 </resources>
