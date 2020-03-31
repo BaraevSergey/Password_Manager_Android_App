@@ -45,14 +45,14 @@
             android:text="@string/EntryPasswordRegister" />
 
         <EditText
-            android:id="@+id/editText4"
+            android:id="@+id/PasswordEdit"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginBottom="30dp"
             android:autofillHints=""
             android:ems="10"
             android:importantForAutofill=""
-            android:inputType="textPersonName"
+            android:inputType="textPassword"
             android:text="" />
 
         <TextView
@@ -63,17 +63,17 @@
             android:text="@string/EntryPasswordAgain" />
 
         <EditText
-            android:id="@+id/PasswordInfo2"
+            android:id="@+id/ConfirmPassword"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginBottom="30dp"
             android:autofillHints=""
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="textPassword"
             android:text="" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/Register"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginBottom="30dp"
