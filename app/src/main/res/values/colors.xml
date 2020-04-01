@@ -6,4 +6,6 @@
     <color name="colorForButton">#0CB1F7</color>
     <color name="colorForButtonact">#1133BA</color>
     <color name="deletebutactive">#ED2A2A</color>
+    <color name="RegistrActive">#A3320F</color>
+    <color name="RegistrNonActive">#BC7D69</color>
 </resources>
