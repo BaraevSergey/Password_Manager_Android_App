@@ -1,9 +1,11 @@
 package com.example.password_manager;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.security.crypto.EncryptedSharedPreferences;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -28,6 +30,7 @@ public class EntryInfo extends AppCompatActivity {
         url = (TextView) findViewById(R.id.editText);
         password = (TextView) findViewById(R.id.editText2);
         dbHelper = new DBHelper(this);
+
         View.OnClickListener oclBtnOk = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,7 +43,7 @@ public class EntryInfo extends AppCompatActivity {
                         startActivity(mainintentbck);
                         break;
                     }
-                    case R.id.add: {//напиши тут закидывание в бд плиз
+                    case R.id.add: {
                         cv.put("url_site", url.getText().toString());
                         cv.put("password", password.getText().toString());
                         // вставляем запись и получаем ее ID
@@ -49,6 +52,7 @@ public class EntryInfo extends AppCompatActivity {
                         finish();
                         startActivity(mainintentbck);
                     }
+
 
                 }
             }

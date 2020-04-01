@@ -1,7 +1,10 @@
 package com.example.password_manager;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKeys;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -63,7 +66,25 @@ public class RegisterPage extends AppCompatActivity {
                 String PasswordEntry = Password.getText().toString();
                 String ConfirmPasswordEntry = ConfirmPassword.getText().toString();
                 if  (checking(LoginEnrty, PasswordEntry, ConfirmPasswordEntry) == true) {
-                    Toast.makeText(RegisterPage.this, "Норм", Toast.LENGTH_SHORT).show();
+                    try {
+                        String  masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
+                        SharedPreferences  sharedPreferences = EncryptedSharedPreferences.create(
+                                "PreferencesFilename",
+                                masterKeyAlias,
+                                RegisterPage.this,
+                                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                        editor.putString("Login",LoginEnrty).putString("Password",PasswordEntry).apply();
+                        //editor.clear().commit();
+                        finish();
+                    }
+                    catch (Exception exc) {
+                        //требовал обработку exceptionov
+
+                    }
+
                 }
                 else {
                     Toast.makeText(RegisterPage.this, "Не норм", Toast.LENGTH_SHORT).show();
