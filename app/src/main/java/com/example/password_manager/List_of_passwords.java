@@ -57,11 +57,12 @@ public class List_of_passwords extends AppCompatActivity {
                 if (c.moveToFirst()) {
                     int urlIndex = c.getColumnIndex("url_site");
                     int pasindex = c.getColumnIndex("password");
+                    int logindex = c.getColumnIndex("login");
                     do {
                         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                         ClipData clip = ClipData.newPlainText("", c.getString(pasindex));
                         clipboard.setPrimaryClip(clip);
-                        String text_password = String.format("Ваш логин - %s , Ваш пароль - %s",new String[]{c.getString(urlIndex),c.getString(pasindex)});
+                        String text_password = String.format("Ваш логин - %s , Ваш пароль - %s",new String[]{c.getString(logindex),c.getString(pasindex)});
                         Toast.makeText(List_of_passwords.this, text_password,Toast.LENGTH_LONG).show();
                     } while (c.moveToNext());
                 }

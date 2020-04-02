@@ -21,13 +21,15 @@ public class EntryInfo extends AppCompatActivity {
     DBHelper dbHelper;
     TextView url;
     TextView password;
+    TextView login;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry_info);
         canc = (Button) findViewById(R.id.cancel);
         add = (Button) findViewById(R.id.add);
-        url = (TextView) findViewById(R.id.editText);
+        url = (TextView) findViewById(R.id.URL);
+        login = (TextView) findViewById(R.id.editText);
         password = (TextView) findViewById(R.id.editText2);
         dbHelper = new DBHelper(this);
 
@@ -44,13 +46,22 @@ public class EntryInfo extends AppCompatActivity {
                         break;
                     }
                     case R.id.add: {
-                        cv.put("url_site", url.getText().toString());
-                        cv.put("password", password.getText().toString());
-                        // вставляем запись и получаем ее ID
-                        long rowId = db.insert("mytable", null, cv);
-                        Intent mainintentbck = new Intent(EntryInfo.this, List_of_passwords.class);
-                        finish();
-                        startActivity(mainintentbck);
+                        String urlbd = url.getText().toString();
+                        String loginbd =  login.getText().toString();
+                        String passbd = password.getText().toString();
+                        if (!(urlbd.isEmpty() && loginbd.isEmpty() && passbd.isEmpty())) {
+                            cv.put("url_site", urlbd);
+                            cv.put("login", loginbd);
+                            cv.put("password", passbd);
+                            // вставляем запись и получаем ее ID
+                            long rowId = db.insert("mytable", null, cv);
+                            Intent mainintentbck = new Intent(EntryInfo.this, List_of_passwords.class);
+                            finish();
+                            startActivity(mainintentbck);
+                        }
+                        else {
+                            Toast.makeText(EntryInfo.this,"Введите все данные для внесения", Toast.LENGTH_LONG);
+                        }
                     }
 
 
