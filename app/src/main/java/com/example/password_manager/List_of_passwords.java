@@ -2,9 +2,12 @@ package com.example.password_manager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,6 +18,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class List_of_passwords extends AppCompatActivity {
@@ -23,6 +27,7 @@ public class List_of_passwords extends AppCompatActivity {
     Button canc;
     LinearLayout llMain;
     DBHelper dbHelper;
+    Dialog dialog;
     int idactivbut; // хранит значение id выбранной кнпопки
     int wrapContent = LinearLayout.LayoutParams.WRAP_CONTENT;
     Button tmpBtn; //прошлая нажатая кнопка
@@ -61,9 +66,17 @@ public class List_of_passwords extends AppCompatActivity {
                     do {
                         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                         ClipData clip = ClipData.newPlainText("", c.getString(pasindex));
-                        clipboard.setPrimaryClip(clip);
-                        String text_password = String.format("Ваш логин - %s , Ваш пароль - %s",new String[]{c.getString(logindex),c.getString(pasindex)});
-                        Toast.makeText(List_of_passwords.this, text_password,Toast.LENGTH_LONG).show();
+                        clipboard.setPrimaryClip(clip); //вроде копирование в буфер тут происходит за эти 3 строчки
+                        String text_password = String.format("Сайт - %s\nВаш логин - %s \n Ваш пароль - %s\n",new String[]{c.getString(urlIndex),c.getString(logindex),c.getString(pasindex)});
+                        AlertDialog.Builder builder = new AlertDialog.Builder(List_of_passwords.this);
+                        builder.setMessage(text_password).setCancelable(true)
+                                .setPositiveButton("Закрыть",new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                    }
+                                });
+                        builder.show();
+
                     } while (c.moveToNext());
                 }
                 c.close();
